@@ -1,0 +1,42 @@
+{% extends "base.html"%}
+
+{% block titulo %} Lista de Equipamentos {% endblock %}
+
+{% block conteudo %}
+    <h1 class="titulo_eq">Equipamentos Cadastrados</h1>
+    {% if equipamentos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Aquisição</th>
+                    <th>Status</th>
+                    <th>Funcionário</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for eq in equipamentos %}
+                <tr>
+                    <td>{{ eq.id }}</td>
+                    <td>{{ eq.nome }}</td>
+                    <td>{{ eq.tipo }}</td>
+                    <td>{{ eq.marca }}</td>
+                    <td>{{ eq.modelo }}</td>
+                    <td>{{ eq.data_aquisicao }}</td>
+                    <td>{{ eq.status }}</td>
+                    <td>{{ eq.funcionario_id or "-" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class ="alert">Nenhum equipamento cadastrado!</div>
+        {% endif %}
+    <a href="{{ url_for('inserir') }}" class="botao_inserir">Novo Equipamento</a>
+    <a href="{{ url_for('atualizar') }}" class="botao_atualizar">Atualizar Equipamento</a>
+{% endblock %}
+

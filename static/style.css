@@ -1,0 +1,161 @@
+/* ESTILO GERAL */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #0f192e;
+    color: #f1f1f1;
+}
+
+/* CONTAINER PRINCIPAL */
+.principal {
+    max-width: 1000px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #1a253f;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+/* TÍTULO */
+.titulo_eq {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #5eb1ff;
+    border-bottom: 1px solid #2a3a5c;
+    padding-bottom: 10px;
+}
+
+/* TABELA */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #2d3a59;
+}
+
+th {
+    background-color: #172135;
+    color: #9cc4ff;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: #202d46;
+}
+
+tr:hover {
+    background-color: #2a395a;
+    transition: background-color 0.3s;
+}
+
+/* ALERTA */
+.alert {
+    padding: 15px;
+    background-color: #304163;
+    border-radius: 6px;
+    color: #ffc107;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* LINK BOTÃO - index.html */
+.botao_inserir {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #0080ff;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.botao_inserir:hover {
+    background-color: #005ec2;
+}
+
+.botao_atualizar {
+        display: inline-block;
+    padding: 12px 20px;
+    background-color: #0080ff;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.botao_atualizar:hover {
+    background-color: #005ec2;
+}
+
+/* FORMULÁRIO */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-size: 0.95rem;
+    color: #b8d8ff;
+}
+
+input, select {
+    padding: 10px 12px;
+    border: 1px solid #2d3a59;
+    border-radius: 6px;
+    background-color: #172135;
+    color: #f1f1f1;
+    font-size: 1rem;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #5eb1ff;
+}
+
+/* BOTÕES DO FORMULÁRIO */
+button.btn,
+.btn {
+    padding: 12px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+}
+
+button.btn {
+    background-color: #0080ff;
+    color: white;
+    transition: 0.3s;
+}
+
+button.btn:hover {
+    background-color: #005ec2;
+}
+
+.btn-secondary {
+    background-color: #2a3a5c;
+    color: #b8d8ff;
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: auto;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #364b74;
+}

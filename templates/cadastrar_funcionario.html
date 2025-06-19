@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block titulo %}Cadastro de Funcionário{% endblock %}
+
+{% block conteudo %}
+
+        <h1 class="titulo_eq">Cadastro de Funcionário</h1>
+
+        <form action="{{ url_for('cadastrar_funcionario')}}" method="POST">
+            <label for="nome">Nome do Funcionário:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="email">Email do Usuário:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="departamento">Departamento:</label>
+            <input type="text" id="departamento" name="departamento" required>
+
+            <button type="submit" class="btn">Salvar</button>
+        </form>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Voltar</a>
+{% endblock %}

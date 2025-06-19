@@ -7,7 +7,7 @@
 </head>
 <body>
         {% if usuario_logado%}
-            <a href="{{ url_for('logout') }}" class="btn_sair">Logout</a>
+            <a href="{{ url_for('logout') }}" class="btn_sair">Encerrar Sessão</a>
         {% endif %}
 
         {% if not usuario_logado %}

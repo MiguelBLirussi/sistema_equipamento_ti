@@ -63,6 +63,7 @@ tr:hover {
     color: #ffc107;
     font-weight: bold;
     text-align: center;
+    margin: 15px auto;
 }
 
 /* LINK BOTÃO - index.html */
@@ -150,8 +151,8 @@ button.btn:hover {
     background-color: #2a3a5c;
     color: #b8d8ff;
     display: inline-block;
-    margin-top: 10px;
     margin-left: auto;
+    margin-top: 15px;
     text-decoration: none;
     transition: background-color 0.3s;
 }
@@ -184,6 +185,7 @@ button.btn:hover {
     border-radius: 6px;
     text-decoration: none;
     font-weight: bold;
+    font-size: 12px;
     text-align: center;
     transition: background-color 0.3s;
     margin-top: 20px;
@@ -209,13 +211,33 @@ button.btn:hover {
     border-radius: 6px;
     text-decoration: none;
     font-weight: bold;
+    font-size: 12px;
     text-align: center;
     transition: background-color 0.3s;
     margin-top: 20px;
-    width: 50px;
+    width: 90px;
     margin-left: 16px;
 }
 
 .btn_sair:hover {
     background-color: #005ec2;
+}
+
+.voltar {
+    padding: 12px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    background-color: #2a3a5c;
+    color: #b8d8ff;
+    margin-left: auto;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.voltar:hover {
+    background-color: #364b74;
 }

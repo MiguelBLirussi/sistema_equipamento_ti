@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block titulo %}Excluir Funcionário{% endblock %}
+
+{% block conteudo %}
+        <h1>Excluir Funcionário</h1>
+
+        <form action="{{ url_for('excluir_funcionario')}}" method="POST">
+            <label for="funcionario_id">ID do Funcionário:</label>
+            <input type="number" id="funcionario_id" name="funcionario_id" required>
+
+            <button type="submit" class="btn">Salvar</button>
+        </form>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Voltar</a>
+{% endblock %}

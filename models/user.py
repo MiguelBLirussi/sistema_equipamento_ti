@@ -32,13 +32,4 @@ class Usuario:
             return Usuario(*usuario)  # Agora todos os campos estão na ordem certa
         
         return None
-
-    def tem_permissao(self, acao):
-        """ Verifica permissões com base no tipo de acesso """
-        permissoes = {
-            "admin": ["criar", "editar", "excluir", "visualizar"],
-            "gerente": ["editar", "visualizar"],
-            "operador": ["visualizar"]
-        }
-        return acao in permissoes.get(self.tipo_acesso, [])
     

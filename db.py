@@ -55,6 +55,19 @@ def criar_tabela_historico():
     conexao.commit()
     conexao.close()
     
+def criar_tabela_user():
+    conexao = criar_conexao()
+    cursor = conexao.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS Usuários (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT,
+            email TEXT,
+            senha TEXT,
+            tipo_acesso TEXT,
+        ) 
+    """)
+
 def iniciar_db():
     criar_tabela_funcionarios()
     criar_tabela_equipamentos()

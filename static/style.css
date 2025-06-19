@@ -83,7 +83,7 @@ tr:hover {
 }
 
 .botao_atualizar {
-        display: inline-block;
+    display: inline-block;
     padding: 12px 20px;
     background-color: #0080ff;
     color: white;
@@ -158,4 +158,64 @@ button.btn:hover {
 
 .btn-secondary:hover {
     background-color: #364b74;
+}
+
+.botao_cadastrar {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #0080ff;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.botao_cadastrar:hover {
+    background-color: #005ec2;
+}
+
+.botao_login {
+    display: block;
+    padding: 12px 20px;
+    background-color: #2d3a59;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+    width: 50px;
+    margin-left: 16px;
+
+}
+
+.botao_login:hover {
+    background-color: #005ec2;
+}
+
+.botoes {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn_sair {
+    display: block;
+    padding: 12px 20px;
+    background-color: #2d3a59;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+    width: 50px;
+    margin-left: 16px;
+}
+
+.btn_sair:hover {
+    background-color: #005ec2;
 }

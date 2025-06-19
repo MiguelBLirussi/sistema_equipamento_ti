@@ -36,7 +36,12 @@
         {% else %}
             <div class ="alert">Nenhum equipamento cadastrado!</div>
         {% endif %}
-    <a href="{{ url_for('inserir') }}" class="botao_inserir">Novo Equipamento</a>
-    <a href="{{ url_for('atualizar') }}" class="botao_atualizar">Atualizar Equipamento</a>
+    <div class="botoes">
+        {% if usuario_logado %}
+            <a href="{{ url_for('cadastrar') }}" class="botao_cadastrar">Cadastrar Usuário</a>
+            <a href="{{ url_for('inserir') }}" class="botao_inserir">Novo Equipamento</a>
+            <a href="{{ url_for('atualizar') }}" class="botao_atualizar">Atualizar Equipamento</a>
+        {% endif %}
+    </div>
 {% endblock %}
 

@@ -6,6 +6,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+        {% if usuario_logado%}
+            <a href="{{ url_for('logout') }}" class="btn_sair">Logout</a>
+        {% endif %}
+
+        {% if not usuario_logado %}
+            <a href="{{ url_for('login') }}" class="botao_login">Login</a>
+        {% endif %}
+
     <div class="principal">
         {% block conteudo %}{% endblock %}
     </div>

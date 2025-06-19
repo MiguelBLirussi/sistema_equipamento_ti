@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block titulo %}Cadastro de Usuários{% endblock %}
+
+{% block conteudo %}
+
+        <h1 class="titulo_eq">Cadastro de Usuários</h1>
+
+        <form action="{{ url_for('cadastrar')}}" method="POST">
+            <label for="nome">Nome do Usuário:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="email">Email do Usuário:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+
+            <label for="tipo_acesso">Tipo de Acesso:</label>
+            <select id="tipo_acesso" name="tipo_acesso" required>
+                <option value="admin">Administrador</option>
+                <option value="gerente">Gerente</option>
+                <option value="operador">Operador</option>
+            </select>
+
+            <button type="submit" class="btn">Salvar</button>
+        </form>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Voltar</a>
+{% endblock %}

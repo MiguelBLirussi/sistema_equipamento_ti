@@ -1,16 +1,77 @@
 from db import iniciar_db
 from db import criar_conexao
 from models.equipamento import Equipamento
-from flask import Flask, render_template, request, redirect, url_for
+from models.user import Usuario
+from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
 
+app.secret_key = "chave_segura"
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        email = request.form["email"]
+        senha = request.form["senha"]
+
+        usuario = Usuario.autenticar(email, senha)
+
+        if usuario:
+            session["usuario_id"] = usuario.id
+            session["tipo_acesso"] = usuario.tipo_acesso
+            return redirect(url_for("index"))  # Redireciona após login bem-sucedido
+        
+        return render_template("login.html", erro="Email ou senha inválidos.")  # Exibe erro na tela
+
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.pop("usuario_id", None)  
+    session.pop("tipo_acesso", None)  
+    return redirect(url_for("login"))  
+
+
+@app.route("/cadastrar", methods=["GET", "POST"])
+def cadastrar():
+    # Verifica se o usuário está logado e é admin
+    if "usuario_id" not in session or session["tipo_acesso"] != "admin":
+        return render_template("erro.html", erro="Acesso negado! Apenas administradores podem cadastrar usuários.")
+
+    if request.method == "POST":
+        nome = request.form["nome"]
+        email = request.form["email"]
+        senha = request.form["senha"]
+        tipo_acesso = request.form["tipo_acesso"]  # Ex: 'admin', 'gerente', 'operador'
+
+        senha_hash = Usuario.gerar_hash(senha)
+
+        conexao = criar_conexao()
+        cursor = conexao.cursor()
+        
+
+        try:
+            cursor.execute(
+                "INSERT INTO usuarios (nome, email, senha, tipo_acesso) VALUES (?, ?, ?, ?)",
+                (nome, email, senha_hash, tipo_acesso)
+            )
+            conexao.commit()
+            return redirect(url_for("index"))  # Redireciona após cadastro
+        except Exception as e:
+            return render_template("cadastrar.html", erro="Erro ao cadastrar usuário.")
+
+        finally:
+            conexao.close()
+
+    return render_template("cadastrar.html")
+
 @app.route("/")
 def index():
+    usuario_logado = "usuario_id" in session
     conexao = criar_conexao()
     equipamentos = Equipamento.listar(conexao)
     conexao.close()
-    return render_template("index.html", equipamentos=equipamentos)
+    return render_template("index.html", equipamentos=equipamentos, usuario_logado=usuario_logado)
 
 @app.route("/inserir", methods=["GET","POST"])
 def inserir():
@@ -65,39 +126,3 @@ def atualizar():
         
 if __name__ == "__main__":
     app.run(debug=True)
-    
-
-# def inserir_equipamento():
-#     conexao = criar_conexao()
-#     nome = input("Qual o nome do equipamento: ")
-#     tipo = input("Qual o tipo de equipamento: ")
-#     marca = input("Qual a marca do equipamento: ")
-#     modelo = input(f"Informe o modelo do {tipo}: ")
-#     data_aquisicao = input("Quando o equipamento foi adquirido: ")
-#     status = input ("Informe o status do equipamento: ")
-#     funcionario_id = input("Informe o ID do funcionário responsável (ou deixe em branco): ")
-#     funcionario_id = int(funcionario_id) if funcionario_id.strip() else None
-#     Equipamento.inserir(conexao, nome, tipo, marca, modelo, data_aquisicao, status, funcionario_id)
-    
-# def listar_equipamentos():
-#     conexao = criar_conexao()
-#     equipamentos = Equipamento.listar(conexao)
-#     for eq in equipamentos:
-#         print(eq)
-    
-# def atualizar_equipamento():
-#     conexao = criar_conexao()
-#     cursor = conexao.cursor()
-#     campo = input("Qual campo deseja alterar: ")
-#     equipamento_id = input("Qual o ID do equipamento: ")
-#     equipamento = cursor.execute("SELECT * FROM Equipamentos WHERE id = ?", (equipamento_id,)).fetchone()
-#     print(f"O campo:({campo}) deste equipamento será alterado: {equipamento}")
-#     novo_valor = input(f"Qual será o novo {campo}: ")
-#     Equipamento.atualizar(conexao, equipamento_id, campo, novo_valor)
-    
-# iniciar_db()
-# listar_equipamentos()
-# atualizar_equipamento()
-
-
-

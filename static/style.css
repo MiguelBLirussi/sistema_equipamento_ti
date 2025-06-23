@@ -29,6 +29,7 @@ body {
 
 /* TABELA */
 table {
+    margin-top: 20px;
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 30px;
@@ -201,6 +202,15 @@ button.btn:hover {
 .botoes {
     display: flex;
     justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.botoes a {
+    flex: 1;
+    text-align: center;
+    min-width: 200px; 
 }
 
 .btn_sair {
@@ -240,4 +250,10 @@ button.btn:hover {
 
 .voltar:hover {
     background-color: #364b74;
+}
+
+.nome_user {
+    margin-left: auto;
+    text-align: center;
+    font-size: 10px;
 }

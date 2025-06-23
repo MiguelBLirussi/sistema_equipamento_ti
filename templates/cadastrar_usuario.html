@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block titulo %}Cadastro de Usuários{% endblock %}
+
+{% block conteudo %}
+
+        <h1 class="titulo_eq">Cadastro de Usuários</h1>
+        {% if erro %}
+            <div class="alert">{{ erro }}</div>
+        {% endif %}
+
+        <form action="{{ url_for('cadastrar_usuario')}}" method="POST">
+            <label for="nome">Nome do Usuário:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="email">Email do Usuário:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+
+            <label for="confirmar_senha">Confirmar Senha:</label>
+            <input type="password" id="confirmar_senha" name="confirmar_senha" required>
+            <small id="mensagem-erro" style="color: #ffc107;"></small>
+
+            <label for="tipo_acesso">Tipo de Acesso:</label>
+            <select id="tipo_acesso" name="tipo_acesso" required>
+                <option value="admin">Administrador</option>
+                <option value="gerente">Gerente</option>
+                <option value="operador">Operador</option>
+            </select>
+
+            <button type="submit" class="btn">Salvar</button>
+        </form>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Voltar</a>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const senha = document.getElementById("senha");
+                const confirmarSenha = document.getElementById("confirmar_senha");
+                const erro = document.getElementById("mensagem-erro");
+                const form = document.querySelector("form");
+
+                function verificarSenhas() {
+                    if (senha.value && confirmarSenha.value && senha.value !== confirmarSenha.value) {
+                        erro.textContent = "As senhas não coincidem.";
+                        return false;
+                    } else {
+                        erro.textContent = "";
+                        return true;
+                    }
+                }
+
+                confirmarSenha.addEventListener("input", verificarSenhas);
+                senha.addEventListener("input", verificarSenhas);
+
+                form.addEventListener("submit", function (e) {
+                    if (!verificarSenhas()) {
+                        e.preventDefault();  // Impede envio se as senhas não coincidirem
+                    }
+                });
+            });
+        </script>
+{% endblock %}

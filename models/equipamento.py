@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Equipamento:
     def __init__(self, id, nome, tipo, marca, modelo, data_aquisicao, status, funcionario_id=None):
         self.id = id
@@ -35,7 +37,8 @@ class Equipamento:
         resultados = cursor.fetchall()
         equipamentos = []
         for row in resultados:
-            equipamento = Equipamento(*row)
+            data_aquisicao = datetime.strptime(row[5], '%Y-%m-%d').strftime('%d/%m/%Y')
+            equipamento = Equipamento(row[0],row[1],row[2],row[3],row[4],data_aquisicao,row[6],row[7]) 
             equipamentos.append(equipamento)
         return equipamentos
     
@@ -50,3 +53,15 @@ class Equipamento:
         query = f"UPDATE Equipamentos SET {campo} = ? WHERE id = ?"
         cursor.execute(query, (novo_valor, equipamento_id))
         conexao.commit()
+
+    @staticmethod
+    def buscar(conexao, nome_busca):
+        equipamentos = []
+        cursor = conexao.cursor()
+        cursor.execute("SELECT * FROM Equipamentos WHERE nome LIKE ?", (f"%{nome_busca}%",))
+        resultados = cursor.fetchall()
+        for row in resultados:
+            data_aquisicao = datetime.strptime(row[5], '%Y-%m-%d').strftime('%d/%m/%Y')
+            equipamento = Equipamento(row[0],row[1],row[2],row[3],row[4],data_aquisicao,row[6],row[7]) 
+            equipamentos.append(equipamento)
+        return equipamentos

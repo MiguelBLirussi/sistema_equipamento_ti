@@ -1,26 +1,26 @@
 {% extends "base.html"%}
 
-{% block titulo %} Lista de Funcionários {% endblock %}
+{% block titulo %} Lista de Usuários {% endblock %}
 
 {% block conteudo %}
-    <h1 class="titulo_eq">Funcionários Cadastrados</h1>
-    {% if funcionarios %}
+    <h1 class="titulo_eq">Usuários Cadastrados</h1>
+    {% if usuarios %}
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
-                    <th>Departamento</th>
                     <th>Email</th>
+                    <th>Tipo de Acesso</th>
                 </tr>
             </thead>
             <tbody>
-                {% for f in funcionarios %}
+                {% for u in usuarios %}
                 <tr>
-                    <td>{{ f.id }}</td>
-                    <td>{{ f.nome }}</td>
-                    <td>{{ f.departamento }}</td>
-                    <td>{{ f.email }}</td>
+                    <td>{{ u.id }}</td>
+                    <td>{{ u.nome }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>{{ u.tipo_acesso }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -30,8 +30,7 @@
         {% endif %}
     <div class="botoes">
         {% if usuario_logado %}
-            <a href="{{ url_for('cadastrar_funcionario') }}" class="botao_cadastrar">Cadastrar Funcionário</a>
-            <a href="{{ url_for('excluir_funcionario') }}" class="botao_cadastrar">Excluir Funcionário</a>
+            <a href="{{ url_for('cadastrar_usuario') }}" class="botao_cadastrar">Cadastrar Usuário</a>
             <a href="{{ url_for('index') }}" class="voltar">Voltar</a>
         {% endif %}
     </div>

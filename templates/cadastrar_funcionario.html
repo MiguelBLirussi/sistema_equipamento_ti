@@ -5,6 +5,9 @@
 {% block conteudo %}
 
         <h1 class="titulo_eq">Cadastro de Funcionário</h1>
+        {% if erro %}
+            <div class="alert">{{ erro }}</div>
+        {% endif %}
 
         <form action="{{ url_for('cadastrar_funcionario')}}" method="POST">
             <label for="nome">Nome do Funcionário:</label>

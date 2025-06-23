@@ -1,47 +1,67 @@
-{% extends "base.html"%}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block titulo %}Gerenciamento de Equipamentos{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    {% if usuario_logado%}
+        <a href="{{ url_for('logout') }}" class="btn_sair">Encerrar Sessão</a>
+        <div class="nome_user">
+            <h1>Bem Vindo! - {{nome_user}} </h1>
+        </div>
+    {% endif %}
 
-{% block titulo %} Lista de Equipamentos {% endblock %}
+    {% if not usuario_logado %}
+        <a href="{{ url_for('login') }}" class="botao_login">Login</a>
+    {% endif %}
 
-{% block conteudo %}
-    <h1 class="titulo_eq">Equipamentos Cadastrados</h1>
-    {% if equipamentos %}
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Tipo</th>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Aquisição</th>
-                    <th>Status</th>
-                    <th>Funcionário</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for eq in equipamentos %}
-                <tr>
-                    <td>{{ eq.id }}</td>
-                    <td>{{ eq.nome }}</td>
-                    <td>{{ eq.tipo }}</td>
-                    <td>{{ eq.marca }}</td>
-                    <td>{{ eq.modelo }}</td>
-                    <td>{{ eq.data_aquisicao }}</td>
-                    <td>{{ eq.status }}</td>
-                    <td>{{ eq.funcionario_id or "-" }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-            <div class ="alert">Nenhum equipamento cadastrado!</div>
-        {% endif %}
-    <div class="botoes">
-        {% if usuario_logado %}
-            <a href="{{ url_for('cadastrar') }}" class="botao_cadastrar">Cadastrar Usuário</a>
-            <a href="{{ url_for('funcionario') }}" class="botao_cadastrar">Gerenciar Funcionários</a>
-            <a href="{{ url_for('inserir') }}" class="botao_inserir">Novo Equipamento</a>
-            <a href="{{ url_for('atualizar') }}" class="botao_atualizar">Atualizar Equipamento</a>
-        {% endif %}
+
+    <div class="principal">
+        <h1 class="titulo_eq">Equipamentos Cadastrados</h1>
+        <div class="botoes">
+            <a href="{{ url_for('buscar') }}" class="botao_cadastrar">Buscar Equipamento</a>
+            {% if usuario_logado %}
+                <a href="{{ url_for('usuario') }}" class="botao_cadastrar">Gerenciar Usuários</a>
+                <a href="{{ url_for('funcionario') }}" class="botao_cadastrar">Gerenciar Funcionários</a>
+                <a href="{{ url_for('inserir') }}" class="botao_inserir">Novo Equipamento</a>
+                <a href="{{ url_for('atualizar') }}" class="botao_atualizar">Atualizar Equipamento</a>
+            {% endif %}
+        </div>
+        {% if equipamentos %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Aquisição</th>
+                        <th>Status</th>
+                        <th>Funcionário</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for eq in equipamentos %}
+                    <tr>
+                        <td>{{ eq.id }}</td>
+                        <td>{{ eq.nome }}</td>
+                        <td>{{ eq.tipo }}</td>
+                        <td>{{ eq.marca }}</td>
+                        <td>{{ eq.modelo }}</td>
+                        <td>{{ eq.data_aquisicao }}</td>
+                        <td>{{ eq.status }}</td>
+                        <td>{{ eq.funcionario_id or "-" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <div class ="alert">Nenhum equipamento cadastrado!</div>
+            {% endif %}
     </div>
-{% endblock %}
+</body>
+</html>
+

@@ -24,25 +24,50 @@
         <label for="equipamento_id">ID do Equipamento:</label>
         <input type="number" id="equipamento_id" name="equipamento_id" required>
 
-        <label for="novo_valor">Novo valor do campo alterado:</label>
-        <input type="text" id="novo_valor" name="novo_valor" required>
+        <label for="novo_valor">Novo Valor:</label>
+        <input type="text" id="novo_valor_input" style="display: block;" required>
+        <select id="novo_valor_select" style="display: none;" required>
+            <option value="Em uso">Em uso</option>
+            <option value="Em manutenção">Em manutenção</option>
+            <option value="Disponível">Disponível</option>
+        </select>
+
         <button type="submit" class="btn">Salvar</button>
         </form>
         <a href="{{ url_for('index') }}" class="btn btn-secondary">Voltar</a>
 
         <script>
             const campoSelect = document.getElementById('campo');
-            const novoValorInput = document.getElementById('novo_valor');
+            const input = document.getElementById('novo_valor_input');
+            const select = document.getElementById('novo_valor_select');
 
             campoSelect.addEventListener('change', function () {
-                const campoSelecionado = this.value;
+                const campo = this.value;
 
-                if (campoSelecionado === 'Data de Aquisição') {
-                    novoValorInput.type = 'date';
-                } else if (campoSelecionado === 'funcionario_id') {
-                    novoValorInput.type = 'number';
+                // Reset ambos
+                input.removeAttribute('name');
+                select.removeAttribute('name');
+                input.removeAttribute('required');
+                select.removeAttribute('required');
+
+                if (campo === 'Status') {
+                    input.style.display = 'none';
+                    select.style.display = 'block';
+                    select.setAttribute('name', 'novo_valor');
+                    select.setAttribute('required', 'required');
                 } else {
-                    novoValorInput.type = 'text';
+                    select.style.display = 'none';
+                    input.style.display = 'block';
+                    input.setAttribute('name', 'novo_valor');
+                    input.setAttribute('required', 'required');
+
+                    if (campo === 'Data de Aquisição') {
+                        input.type = 'date';
+                    } else if (campo === 'funcionario_id') {
+                        input.type = 'number';
+                    } else {
+                        input.type = 'text';
+                    }
                 }
             });
         </script>

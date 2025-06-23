@@ -33,3 +33,14 @@ class Usuario:
         
         return None
     
+    @staticmethod
+    def listar(conexao):
+        cursor = conexao.cursor()
+        cursor.execute("SELECT * FROM Usuários")
+        resultados = cursor.fetchall()
+        usuarios = []
+        for row in resultados:
+            usuario = Usuario(*row)
+            usuarios.append(usuario)
+        return usuarios
+    

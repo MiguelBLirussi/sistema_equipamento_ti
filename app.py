@@ -4,13 +4,14 @@ from models.equipamento import Equipamento
 from models.user import Usuario
 from models.funcionario import Funcionario
 from flask import Flask, render_template, request, redirect, url_for, session
+import logging
 
 app = Flask(__name__)
 
 app.secret_key = "chave_segura"
 
 #ROTAS RELACIONADAS AO LOGIN
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         email = request.form["email"]
@@ -34,12 +35,25 @@ def logout():
     return redirect(url_for("login"))  
 
 @app.context_processor
-def adicionar_usuario_logado():
-    return {"usuario_logado": "usuario_id" in session}
+def adicionar_contexto_global():
+    nome_user = None
+    if "usuario_id" in session:
+        conexao = criar_conexao()
+        cursor = conexao.cursor()
+        cursor.execute("SELECT nome FROM Usuários WHERE id = ?", (session["usuario_id"],))
+        resultado = cursor.fetchone()
+        if resultado:
+            nome_user = resultado[0]
+        conexao.close()
+
+    return {
+        "usuario_logado": "usuario_id" in session,
+        "nome_user": nome_user
+    }
 
 #ROTAS RELACIONADAS A USUÁRIOS
-@app.route("/cadastrar", methods=["GET", "POST"])
-def cadastrar():
+@app.route("/cadastrar_usuario", methods=["GET", "POST"])
+def cadastrar_usuario():
     # Verifica se o usuário está logado e é admin
     if "usuario_id" not in session or session["tipo_acesso"] != "admin":
         return render_template("erro.html", erro="Acesso negado! Apenas administradores podem cadastrar usuários.")
@@ -48,9 +62,13 @@ def cadastrar():
         nome = request.form["nome"]
         email = request.form["email"]
         senha = request.form["senha"]
-        tipo_acesso = request.form["tipo_acesso"]  # Ex: 'admin', 'gerente', 'operador'
-
-        senha_hash = Usuario.gerar_hash(senha)
+        confirmar_senha = request.form["confirmar_senha"]
+        tipo_acesso = request.form["tipo_acesso"]
+        
+        if senha != confirmar_senha:
+            return render_template("cadastrar.usuario.html", erro="As senhas não coincidem!")
+        elif senha == confirmar_senha:
+            senha_hash = Usuario.gerar_hash(senha)
 
         conexao = criar_conexao()
         cursor = conexao.cursor()
@@ -58,18 +76,25 @@ def cadastrar():
 
         try:
             cursor.execute(
-                "INSERT INTO usuarios (nome, email, senha, tipo_acesso) VALUES (?, ?, ?, ?)",
+                "INSERT INTO Usuários (nome, email, senha, tipo_acesso) VALUES (?, ?, ?, ?)",
                 (nome, email, senha_hash, tipo_acesso)
             )
             conexao.commit()
-            return redirect(url_for("index"))  # Redireciona após cadastro
+            return redirect(url_for("index"))
         except Exception as e:
-            return render_template("cadastrar.html", erro="Erro ao cadastrar usuário.")
+            return render_template("usuario.html", erro="Erro ao cadastrar usuário.")
 
         finally:
             conexao.close()
 
-    return render_template("cadastrar.html")
+    return render_template("cadastrar_usuario.html")
+
+@app.route("/usuario")
+def usuario():
+    conexao = criar_conexao()
+    usuarios = Usuario.listar(conexao)
+    conexao.close()
+    return render_template("usuario.html", usuarios=usuarios)
 
 #ROTAS RELACIONADAS A FUNCIONÁRIOS
 @app.route("/funcionario")
@@ -112,13 +137,24 @@ def cadastrar_funcionario():
     return render_template("cadastrar_funcionario.html")
 
 #ROTAS RELACIONADAS AOS EQUIPAMENTOS E PAGINA INICIAL
-@app.route("/")
+@app.route("/home")
 def index():
     usuario_logado = "usuario_id" in session
     conexao = criar_conexao()
     equipamentos = Equipamento.listar(conexao)
     conexao.close()
     return render_template("index.html", equipamentos=equipamentos, usuario_logado=usuario_logado)
+
+@app.route("/buscar",methods=["GET","POST"])
+def buscar():
+    conexao = criar_conexao()
+    if request.method == "POST":
+        nome_busca = request.form["nome_busca"]
+        equipamentos = Equipamento.buscar(conexao,nome_busca)
+        conexao.close()
+        return render_template("buscar.html", equipamentos=equipamentos)
+    conexao.close()
+    return render_template("buscar.html", equipamentos=None)
 
 @app.route("/inserir", methods=["GET","POST"])
 def inserir():
@@ -144,27 +180,6 @@ def atualizar():
         campo = request.form["campo"].lower()
         equipamento_id = request.form["equipamento_id"]
         novo_valor = request.form["novo_valor"]
-        
-        nomes_campos = {
-        "Nome": "nome",
-        "Tipo": "tipo",
-        "Marca": "marca",
-        "Modelo": "modelo",
-        "Data de Aquisição": "data_aquisicao",
-        "Status": "status",
-        "funcionario_id": "funcionario_id"
-        }
-
-        campo_bruto = request.form["campo"]
-        campo = nomes_campos.get(campo_bruto)
-        if campo is None:
-            return render_template("atualizar.html", erro="Campo inválido.")
-        
-        try:
-            equipamento_id = int(equipamento_id)
-        except ValueError:
-            return render_template("atualizar.html", erro="O ID deve ser um número inteiro.")
-
         conexao = criar_conexao()
         Equipamento.atualizar(conexao,equipamento_id,campo,novo_valor)
         conexao.close()
@@ -172,4 +187,5 @@ def atualizar():
     return render_template("atualizar.html")
         
 if __name__ == "__main__":
+    logging.debug("recebendo dados")
     app.run(debug=True)
